@@ -24,5 +24,13 @@ export default {
     } catch (error) {
       return res.status(400).json(error)
     }
+  },
+  async index (req: Request, res: Response) {
+    try {
+      const allTasks = await prisma.task.findMany()
+      return res.status(200).json(allTasks)
+    } catch (error) {
+      return res.status(400).json(error)
+    }
   }
 }
