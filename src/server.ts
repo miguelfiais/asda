@@ -1,14 +1,13 @@
 import express from 'express'
+import { routes } from './routes'
 
 const app = express()
 
 app.use(express.json())
 
-const port = process.env.PORT ?? 3333
+app.use(routes)
 
-app.get('/', (req, res) => {
-  return res.send('hello world!!')
-})
+const port = process.env.PORT ?? 3333
 
 app.listen(port, () => {
   console.log(`Listening on ${port}`)
