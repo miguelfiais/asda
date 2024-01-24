@@ -106,5 +106,30 @@ export default {
     } catch (error) {
       return res.status(400).json(error)
     }
+  },
+  async changeColor (req: Request, res: Response) {
+    try {
+      const paramsSchema = z.object({
+        id: z.string().uuid()
+      })
+
+      const { id } = paramsSchema.parse(req.params)
+
+      const bodySchema = z.object({
+        color: z.string()
+      })
+      const { color } = bodySchema.parse(req.body)
+      const changeColorTask = await prisma.task.update({
+        where: {
+          id
+        },
+        data: {
+          color
+        }
+      })
+      return res.status(200).json(changeColorTask)
+    } catch (error) {
+      return res.status(400).json(error)
+    }
   }
 }
