@@ -27,7 +27,11 @@ export default {
   },
   async index (req: Request, res: Response) {
     try {
-      const allTasks = await prisma.task.findMany()
+      const allTasks = await prisma.task.findMany({
+        orderBy: {
+          updatedAt: 'desc'
+        }
+      })
       return res.status(200).json(allTasks)
     } catch (error) {
       return res.status(400).json(error)
