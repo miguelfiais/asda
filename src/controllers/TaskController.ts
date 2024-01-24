@@ -32,5 +32,79 @@ export default {
     } catch (error) {
       return res.status(400).json(error)
     }
+  },
+  async update (req: Request, res: Response) {
+    try {
+      const paramsSchema = z.object({
+        id: z.string().uuid()
+      })
+      const bodySchema = z.object({
+        title: z.string().optional(),
+        content: z.string().optional(),
+        color: z.string().optional(),
+        favorite: z.boolean().optional()
+      })
+      const { id } = paramsSchema.parse(req.params)
+
+      const { title, content, color, favorite } = bodySchema.parse(req.body)
+
+      const updateTask = await prisma.task.update({
+        where: {
+          id
+        },
+        data: {
+          color,
+          content,
+          title,
+          favorite
+        }
+      })
+      return res.status(200).json(updateTask)
+    } catch (error) {
+      return res.status(400).json(error)
+    }
+  },
+  async destroy (req: Request, res: Response) {
+    try {
+      const paramsSchema = z.object({
+        id: z.string().uuid()
+      })
+
+      const { id } = paramsSchema.parse(req.params)
+
+      await prisma.task.delete({
+        where: {
+          id
+        }
+      })
+      return res.status(200).json('ok')
+    } catch (error) {
+      return res.status(400).json(error)
+    }
+  },
+  async updateFavorite (req: Request, res: Response) {
+    try {
+      const paramsSchema = z.object({
+        id: z.string().uuid()
+      })
+
+      const { id } = paramsSchema.parse(req.params)
+
+      const bodySchema = z.object({
+        favorite: z.boolean()
+      })
+      const { favorite } = bodySchema.parse(req.body)
+      const updateFavoriteTask = await prisma.task.update({
+        where: {
+          id
+        },
+        data: {
+          favorite
+        }
+      })
+      return res.status(200).json(updateFavoriteTask)
+    } catch (error) {
+      return res.status(400).json(error)
+    }
   }
 }
