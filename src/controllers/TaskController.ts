@@ -8,7 +8,7 @@ export default {
       const bodySchema = z.object({
         title: z.string(),
         content: z.string(),
-        color: z.string(),
+        color: z.string().optional(),
         favorite: z.boolean().optional()
       })
       const { title, content, color, favorite } = bodySchema.parse(req.body)
